@@ -1,4 +1,4 @@
-const BASE_URL = 'https://64330e7d3e05ff8b37343ad9.mockapi.io/contacts/:endpoint';
+const BASE_URL = 'https://64330ba53e05ff8b3733fd5c.mockapi.io/contacts';
 
 export const fetchContactsService = async () => {
   const data = await fetch(BASE_URL, {

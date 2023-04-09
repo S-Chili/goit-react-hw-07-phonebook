@@ -1,31 +1,34 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useLocalStorage } from 'components/App';
 import css from './Contacts.module.css'
-import { useDispatch } from 'react-redux';
-import {addContactAction} from '../../redux/contactsSlice' 
-import { nanoid } from 'nanoid';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { addContactThunk } from '../../redux/store';
 
 export default function ContactForm() {
+  const [name, setName] = useLocalStorage('name', ' ');
+  const [phone, setPhone] = useLocalStorage('phone', ' ');
   const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts.items);
+  const names = contacts.map(obj => obj.name);
 
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-
-  const handleNameChange = (evt) => {
-    setName(evt.target.value);
-  }
-
-  const handleNumberChange = (evt) => {
-    setNumber(evt.target.value);
-  }
+  const inputChangeHandler = e => {
+    const { name, value } = e.target;
+    name === 'name' ? setName(value) : setPhone(value);
+  };
   
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    dispatch(addContactAction({name, number, id:nanoid()}))
+    const form = evt.target;
+    const name = form.elements.name.value;
+    const phone = form.elements.phone.value;
+    const newContact = { name, phone };
+    if (!names.includes(name)) {
+      dispatch(addContactThunk(newContact));
+    } else {
+      alert(`${name} is already in contacts`);
+    }
     setName('');
-    setNumber('');
-  }
+    setPhone('');
+  };
 
   return (
     <form onSubmit={handleSubmit} className={css.Form}>
@@ -39,7 +42,7 @@ export default function ContactForm() {
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
           value={name}
-          onChange={handleNameChange}
+          onChange={inputChangeHandler}
           className={css.FormItem}
         />
       </label>
@@ -48,12 +51,12 @@ export default function ContactForm() {
         <input
           placeholder="Enter phone number"
           type="tel"
-          name="number"
+          name="phone"
           pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}"
           title="Phone number must be in the format xxx-xx-xx"
           required
-          value={number}
-          onChange={handleNumberChange}
+          value={phone}
+          onChange={inputChangeHandler}
           className={css.FormItem}
         />
       </label>
@@ -63,7 +66,3 @@ export default function ContactForm() {
     </form>  
   );
 }
-
-ContactForm.propTypes = {
-    onAddContact: PropTypes.func,
-  };

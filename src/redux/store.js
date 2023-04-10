@@ -2,16 +2,16 @@ import { configureStore, createAsyncThunk } from '@reduxjs/toolkit';
 import { contactsReducer } from './contactsSlice';
 import { filterReducer } from './filterSlice';
 import {
-  fetchContactsService,
-  addContactService,
-  deleteContactService,
-} from '../services/fetchContacts';
+  getContacts,
+  addContact,
+  deleteContact,
+} from './operations';
 
-export const fetchContactsThunk = createAsyncThunk(
+export const getContactsThunk = createAsyncThunk(
   'contacts/fetchAll',
   async (_, thunkAPI) => {
     try {
-      const data = await fetchContactsService();
+      const data = await getContacts();
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -22,7 +22,7 @@ export const fetchContactsThunk = createAsyncThunk(
 export const addContactThunk = createAsyncThunk(
   'contacts/addContact',
   async contact => {
-    const data = await addContactService(contact);
+    const data = await addContact(contact);
     return data;
   }
 );
@@ -30,7 +30,7 @@ export const addContactThunk = createAsyncThunk(
 export const deleteContactThunk = createAsyncThunk(
   'contacts/deleteContact',
   async id => {
-    const data = await deleteContactService(id);
+    const data = await deleteContact(id);
     return data;
   }
 );

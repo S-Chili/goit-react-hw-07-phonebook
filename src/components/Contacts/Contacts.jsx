@@ -3,7 +3,7 @@ import css from './Contacts.module.css'
 import Filter from './Filter';
 import {  useDispatch, useSelector } from 'react-redux';
 import { deleteContactThunk } from 'redux/store';
-import { fetchContactsThunk } from 'redux/store';
+import { getContactsThunk } from 'redux/store';
 
 function Contacts() {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ function Contacts() {
  };
 
  useEffect(() => {
-   dispatch(fetchContactsThunk());
+   dispatch(getContactsThunk());
  }, [dispatch]);
 
   return (

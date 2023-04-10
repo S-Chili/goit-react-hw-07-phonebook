@@ -52,15 +52,15 @@ export default function ContactForm() {
           placeholder="Enter phone number"
           type="tel"
           name="phone"
-          pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}"
-          title="Phone number must be in the format xxx-xx-xx"
+          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+          title="Phone number must be in the format xxx-xxx-xxxx"
           required
           value={phone}
           onChange={inputChangeHandler}
           className={css.FormItem}
         />
       </label>
-      <button type="submit" className={css.Button}>
+      <button type="submit" className={css.FormBtn}>
         Add contact
       </button>
     </form>  

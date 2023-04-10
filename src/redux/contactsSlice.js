@@ -1,30 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  fetchContactsThunk,
+  getContactsThunk,
   addContactThunk,
   deleteContactThunk,
 } from './store';
 
-const initialStateContacts = {
-  items: [],
-  isLoading: false,
-  error: null,
-};
-
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: initialStateContacts,
+  initialState: {
+    items: [],
+    isLoading: false,
+    error: null,
+  },
   extraReducers: builder => {
     builder
-      .addCase(fetchContactsThunk.pending, state => {
+      .addCase(getContactsThunk.pending, state => {
         state.isLoading = true;
       })
-      .addCase(fetchContactsThunk.fulfilled, (state, action) => {
+      .addCase(getContactsThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
         state.items = action.payload;
       })
-      .addCase(fetchContactsThunk.rejected, (state, action) => {
+      .addCase(getContactsThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
